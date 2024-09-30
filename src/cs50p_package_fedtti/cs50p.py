@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import discord
+import re
 from openai import OpenAI
 
 load_dotenv()
@@ -35,11 +36,19 @@ async def on_message(message):
         await message.channel.send('hello, world')
 
     if client.user.mentioned_in(message):
-        msg = 'you\'re welcome, {}'.format(message.author.mention)
+        msg = ''
+
+        if re.search('thank', message.content):
+            msg = 'you\'re welcome, {}'.format(message.author.mention)
+
+        else:
+            msg = 'got it, {}'.format(message.author.mention)
+
         await message.channel.send(msg)
 
     if not message.guild:
         # TODO: @fedtti - Start a conversation using GTP-4o.
+        await message.channel.send('got it')
         return
 
 
