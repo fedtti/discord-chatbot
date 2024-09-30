@@ -9,6 +9,7 @@ DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 GITHUB_TOKEN = os.getenv('GITHUB_TOKEN')
 
 intents = discord.Intents.default()
+intents.members = True
 intents.message_content = True
 
 client = discord.Client(intents=intents)
@@ -34,8 +35,12 @@ async def on_message(message):
         await message.channel.send('hello, world')
 
     if client.user.mentioned_in(message):
-        # TODO: @fedtti - Start a conversation with GPT-4o.
-        await message.channel.send('you\'re welcome')
+        msg = 'you\'re welcome, {}'.format(message.author.mention)
+        await message.channel.send(msg)
+
+    if not message.guild:
+        # TODO: @fedtti - Start a conversation using GTP-4o.
+        return
 
 
 client.run(DISCORD_TOKEN)
